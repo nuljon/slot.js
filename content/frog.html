@@ -1,0 +1,89 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="An ASP.NET experiment using the Model-View-ViewModel Single Page Application design pattern (MVVM SPA).">
+    <meta name="author" content="Jon A. Nuljon">
+    <link rel="icon" href="http//bootstrap.nuljon.com/favicon.ico">
+    <title>LuckyFrogZ Slot.js</title>
+    <link href="../css/bootstrap.css" rel="stylesheet">
+    <link href="../css/bootstrap-grid.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Slackey' rel='stylesheet' type='text/css'>
+    <link type="text/css" rel="stylesheet" href="../css/styles.css"/>
+     
+</head>
+<body> 
+    <div id="container">
+    <div class="jumbotron jumbotron-fluid">
+  <div class="masthead container-fluid">
+   
+  <img class="img-fluid" src="img/luckyfrogz.png"   alt="LuckyFrogZ banner" / >
+   
+  </div><!--/masthead container-->  
+</div><!--/jumbotron-->
+         <div class="header  row">
+                <div class="col-6  col-md-3">
+                       PLAYER:<br> <h4 id="playerName"></h3>
+                 </div ><!--/ col-4 -->
+                 <div class="heads col-6">
+                       <h3  id="headline">Play and Win</h3>
+                 </div><!-- /col-4 -->
+                 <div class="credits col-6  col-md-3">
+                        CREDITS:<br><h4 id="credits"></h4>
+                  </div><!--/ col-4 -->  
+         </div><!-- end header row -->
+         <div  class="three-to-one">
+         <div class="slots row no-gutters" id="reels ">
+                <canvas class="col-4" id="canvas1" width="100" height="300"></canvas>
+                <canvas class="col-4" id="canvas2" width="100" height="300"></canvas>
+                <canvas class="col-4" id="canvas3" width="100" height="300"></canvas>
+         </div><!--end row reels-->
+         </div><!-- /three-to-one-->
+         <div id="overlay">
+                <div id="winline"></div>
+         </div>
+          <div class="lever row no-gutters">
+                 <div class="col-12">
+                        <div  role="button" tabindex=“0” id="play">PLAY</div>
+                  </div><!-- /col-12 -->
+           </div><!--/lever row-->
+         <div class="result row no-gutters">
+    <div class="betbox col-4">
+        <p class="data">
+        <span id="bet">0</span>
+        </p>
+    </div><!-- col-4 -->
+    <div class="incrementals col-2">
+        <input type="image" id="add" src="img/adder.png" name="up" height=35vh ><br>
+        <input type="image" id="subtract" src="img/subber.png" name="down" height=35vh >
+    </div><!-- col-2- -->
+           <div class="col-6">
+                        <p id="results"> 
+                            <span id="resultstotal"></span></p>
+                       <p id="status">
+                            <span id="message"></span>
+                       </p>
+           </div> <!-- /col-6 -->
+</div><!-- /result  row -->
+            <!-- Loading overlay -->
+         <div id="loading">
+                <p>Loading..</p>
+                <div id="progressbar">
+                <div id="progress"></div>
+                </div><!--/progressbar-->
+           </div><!--/loading-->     
+            <div class="debug row">
+                    <div class="col-4" id="audio_debug">Audio not supported</div><!--/col-4-->
+                    <div class="col-8">
+                    <div rolle =button id="login">LOGON</div>                         
+                     </div><!-- col-4 -->
+            </div><!--/debug row-->
+        </div><!--/container-->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script type="text/javascript" src="../js/slot.js"></script>
+<!--<script type="text/javascript" src="../js/jq-touch-events.js">-->
+<script type="text/javascript">$(function () { SlotGame(); });</script>
+<!--<script type="text/javascript"></script> -->
+</body>
+</html>
