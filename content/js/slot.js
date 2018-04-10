@@ -5,9 +5,9 @@ var STATE_SLOT3_STOP = 4;
 var STATE_STOPPED = 5;
 var STATE_RESULTS = 6;
 var STATE_END = 7;
-var PlayerName = 'Ima Highroller'; // this will come login and Db someday
-var Credits = 0;  // local storage for now but will be in a Db someday
-var bet = 5;
+var playerName = 'Your Name'; // default name
+var Credits = 100;  // default credits - logon retrieves saved from local storage
+var bet = 5;    // default bet
 var msgindex = 0; // the message to play from the MESSAGE_TABLE
 var progressCount = 0; // current progress count
 var progressTotalCount = 0; // total count
@@ -187,7 +187,8 @@ function initAudio(audios, callback) {
     }
 }
 
-var IMAGE_HEIGHT = ($(window).width()/3)-15;
+var IMAGE_HEIGHT = (0.83*$(window).width()-60)/3;
+if ($(window).width() > 768) IMAGE_HEIGHT = 193;
 var IMAGE_TOP_MARGIN = 0;
 var IMAGE_BOTTOM_MARGIN = 0;
 var SLOT_SEPARATOR_HEIGHT = 0;
@@ -195,7 +196,7 @@ var SLOT_HEIGHT = IMAGE_HEIGHT + IMAGE_TOP_MARGIN + IMAGE_BOTTOM_MARGIN + SLOT_S
 var RUNTIME = 2000; // how long all slots spin before starting countdown
 var SPINTIME = 1000; // how long each slot spins at minimum
 var ITEM_COUNT = 6; // item count in slots
-var SLOT_SPEED = 100; // how many pixels per second slots roll
+var SLOT_SPEED = 25; // how many pixels per second slots roll
 var DRAW_OFFSET =0; // how much draw offset in slot display from top
 
 var MESSAGE_TABLE = [
@@ -261,8 +262,10 @@ function SlotGame() {
 
     $('canvas').attr('height', SLOT_HEIGHT * ITEM_COUNT *2);
     $('canvas').css('height', SLOT_HEIGHT * ITEM_COUNT * 2);
-    $('canvas').css('width', IMAGE_HEIGHT);
-    $('canvas').attr('width', IMAGE_HEIGHT);
+    //$('canvas').css('width', '33%');
+    //$('canvas').attr('width', '33%');
+   $('canvas').css('width', IMAGE_HEIGHT);
+   $('canvas').attr('width', IMAGE_HEIGHT);
    // $('#reels').attr('height',IMAGE_HEIGHT');
    //     $('.reels').css('height',IMAGE_HEIGHT');
       //      $('.reels').css('top',IMAGE_HEIGHT');
@@ -328,39 +331,63 @@ function SlotGame() {
 
         // Start game loop
         game.loop();
-
-
-        function logonView(event) {
-            $('#playerName').text(PlayerName);
+        
+        // function starts game from lever pull
+        function startRoll(e) {
+            _startRoll(e);
         }
- 
-        // function starts game
+        
+        //this one starts from a button click
         function _startRoll(e) {
             $('#headline').text('Rolling!');
             //  game.audios.roll.play();  // moved this into last part of restart
             game.restart();
         }
-       
+        $('#logon').on('click', function (event) {
+            //event.preventDefault();
+            var $PlayerName = $('#Name');
+            playerName = $PlayerName.val();
+            $('.logon-form').css('display','none');
+            $('.logoff-form').css('display','table-cell');
+            GetPlayerData();
+        });
+        $('#logoff').on('click',function(event){
+            $('.logon-form').css('display', 'table-cell');
+            $('.logoff-form').css('display', 'none');
+            playerName = 'Your Name';
+            GetPlayerData();
+        });
 
         function adjustBet(event) {
             bet += event.data.amount;
             $('#bet').text(bet);
+            // if Player cannot  cover the bet ?
+            if (bet > Credits) {
+                // tell Player the bad news and return them whence they came
+                $('#status').show();
+                $('#message').text("Hey friend, bet lower or get more credit!");
+                this.audios.nowin.play();
+                return;
+            }
         }
 
-        $('#login').on('click',{name: PlayerName}, logonView);
+
+       // $('#login').on('click',{name: PlayerName}, logonView);
         $('#add').on('click',{amount: 5}, adjustBet);
         $('#subtract').on('click',{amount: -5}, adjustBet);
 
         // start game on play button click
         $('#play').click(_startRoll);
+        // start game on arm click
+        $('#arm').click(_startRoll);
         // start game on key press
-        $(window).keypress(function (e) {
+       /* $(window).keypress(function (e) {
             if (e.which === 0 || e.which === 32) {
                 // space button pressed
                 e.preventDefault();
                 _startRoll();
             }
-        });
+        });*/
 
         // Play intro
        // game.audios.intro.play();
@@ -411,6 +438,24 @@ function Game() {
     this.draw(true);
 }
 
+function GetPlayerData()
+{
+      Credits = Number(localStorage.getItem(playerName));
+      //if they don't have any credit, introduce them to Benjamin Dole
+      if (Credits === null || Credits < bet) Credits = 100;
+      $('#status').show();
+      $('#message').text("Insufficient funds, King Frog spots you a Benji");
+      
+      //place the bet and stash remaining credit back in local storage
+      Credits = Credits - bet;
+      localStorage.setItem(playerName, Credits);
+      // update screen  to reflect recent business
+      $('#credits').text(Credits);
+      $('#playerName').text(playerName);
+      $('#results').hide();
+      $('#status').hide();
+}
+
 Game.prototype.setRandomResult = function ()
 {
     this.result1 = parseInt(Math.random() * this.items1.length);
@@ -433,39 +478,7 @@ Game.prototype.setJackpotResult = function ()
 };
 
 // Restart the game and determine the stopping locations for reels
-Game.prototype.restart = function () {
-
-   // read the bet as a number
-   //   bet = Number($('#bet').val()); 
-
-  // if bet is no good or too low, make it good
- //     if(bet===null || bet <5)bet=5;
-
-  // write the bet to screen
-  //    $('#bet').text(bet);
-
-  //access the Player's line of credit from  their local bank
-      Credits = Number(localStorage.getItem('credits'));
-      
-  //if they don't have any credit, introduce them to Benjamin Dole
-      if (Credits===null || Credits <= bet)  Credits = 100;
-
-   // if Player cannot  cover the bet ?
-     if (bet > Credits ) {
-         // tell Player the bad news and return them whence they came
-        $('#status').show();
-        $('#message').text("Hey friend, bet lower or get more credit!");
-        this.audios.nowin.play();
-        return;
-     }
-    //place the bet and stash remaining credit back in local storage
-    Credits=Credits-bet;
-    localStorage.setItem("credits",Credits);  
-
-    // update screen  to reflect recent business
-     $('#credits').text(Credits); 
-    $('#results').hide();
-    $('#status').hide();     
+Game.prototype.restart = function () {   
 
     // continue readying game to roll
      msgindex=0; // reset message index;
@@ -476,6 +489,8 @@ Game.prototype.restart = function () {
     this.stopped1 = false;
     this.stopped2 = false;
     this.stopped3 = false;
+
+    // THIS IS WHERE WE WANT TO DO THE RESIZE 
 
     // randomize reel locations
     this.offset1 = -parseInt(Math.random(ITEM_COUNT)) * SLOT_HEIGHT;
@@ -505,6 +520,7 @@ window.requestAnimFrame = (function () {
         };
 })();
 
+$(window).resize(function () { location.reload(); });
 
 Game.prototype.loop = function () {
     var that = this;
@@ -622,12 +638,12 @@ Game.prototype.update = function () {
            Credits = Credits+bet*matches;
            // and display them
             $('#multiplier').text(matches);
-            $('#results').show( );
+            $('#results').show();
             $('#resultstotal').text("winnings: " + (bet*matches));            
             $('#status').show();
             $('#message').text(MESSAGE_TABLE[msgindex]);
             $('#credits').text(Credits);    //update screen with new  credits total;
-            localStorage.setItem("credits",Credits);  //stuff the credit value in local storage
+            localStorage.setItem(playerName,Credits);  //stuff the credit value in local storage
             //celebrate
             if (matches === 100 || matches ===1000) {
                 // Play win sound

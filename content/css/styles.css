@@ -1,0 +1,175 @@
+html {
+    position: relative;
+    min-height: 100%;
+    font-size: 62.5%;
+}
+
+body {
+    font-family: "Slackey";
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+    color: #fff000;
+    background-color: #0000ff;
+    text-shadow: 3px 2px #3d3d3d;
+}
+
+.row {}
+
+h1 {
+    font-size: 4rem;
+    color: #0f0;
+    font-weight: 800;
+    text-align: center;
+    text-shadow: 3px 2px #3d3d3d;
+}
+
+@media (max-width: 575px) {
+    .heads {
+        display: none;
+    }
+}
+
+.img-fluid {
+    max-width: 100%;
+    height: auto;
+}
+
+.three-to-one {
+    border: 5px inset #3f3f3f;
+    border-radius: 1px;
+    position: relative;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+
+.three-to-one:before {
+    display: block;
+    content: "";
+    width: 100%;
+    padding-top: 33.33%;
+}
+
+.three-to-one>.slots {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border: 5px solid #fff000;
+    border-radius: 0px;
+    flex-wrap: nowrap;
+    overflow: hidden;
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+canvas #canvas1 #canvas2 #canvas3 {
+    width: 100%;
+    height: auto;
+    background-color: #fff;
+    border-style: groove;
+    border-width: 3px;
+    border-collapse: collapse;
+    border-color: #c3d530;
+}
+
+#reels {}
+
+#play {
+    color: #3355ff;
+    text-shadow: 1px 2px #3e3e3e;
+    min-width: 80%;
+    min-height: 5%;
+    background: #fff000;
+    border: 5px outset #ffffff;
+    border-radius: 1px;
+    margin-top: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+
+/* 
+.betbox
+{
+	position: relative;
+	margin-top: 5px;
+	margin-right:5px;
+	margin-left: 5px;
+	float: left;
+	display: inline-block;
+	background-color:#fff000;
+	color: #3355ff;
+	border:5px inset #ffffff;
+	border-radius: 1px;
+	max-width:70px;
+	height:70px;
+	vertical-align: middle;
+	text-shadow: 3px 2px #3d3d3d;
+}
+
+ .data 
+{
+	font-family: slackey, arial, verdana;
+	font-size: 2rem;
+	font-weight: 500;
+	font-stretch: ultra-expanded;
+	text-shadow: 1px 2px #191919;
+	text-align: center;
+	margin:0px;
+	padding-top: 15%;
+	padding-bottom: 10%;
+	vertical-align: middle;
+}
+
+.incremntals {
+    display: inline-block;
+    max-height: 75px;
+    max-width: 50px;
+}
+
+ */
+
+#bet {
+    vertical-align: middle;
+}
+
+.row {}
+
+#debug {}
+
+#login {
+    color: #55dd66;
+    text-shadow: 1px 2px #3e3e3e;
+    min-width: 50%;
+    min-height: 5%;
+    background: #fff000;
+    border: 5px outset #ffffff;
+    border-radius: 1px;
+    margin-top: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set padding to display errors that occur during databinding */
+
+.padding-error {
+    padding-top: 20px;
+}
+
+#status #results {}
+
+#multiplier {}
+
+#progress #loading #audio debug

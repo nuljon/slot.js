@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="A single page application (SPA) experiment with animated user interface (UI) controls, and persistent user data via local storage. The SPA is a slot machine coded in javascript, CSS, snd HTML5.">
+    <meta name="author" content="Jon A. Nuljon">
+    <link rel="icon" href="">
+    <title>LuckyFrogZ Slot Machine</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+    <link href="http://fonts.googleapis.com/css?family=Slackey" rel="stylesheet" type="text/css" n/>
+    <link type="text/css" rel="stylesheet" href="css/slot.css" />
+    <link rel="stylesheet" href="css/slot-anime.css" type="text/css" />
+</head>
+
+<body>
+    <div class="row no-gutters">
+        <div class="col-10 container">
+            <div class="mt-1" id="header">
+                <a class="shine" href="#"><img class="img-fluid" src="img/luckyfrogz.png" alt="LuckyFrogz"></a>
+            </div>
+            <div class="">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="py-2">PLAYER</th>
+                            <th><input type="image" role="button" src="img/subber.png" name="down" height=20vh tabindex="0" id="subtract"
+                                />BET<input type="image" role="button" src="img/adder.png" name="up" height=20vh tabindex="1"
+                                    id="add" /></th>
+                            <th>CREDITS</th>
+                        </tr>
+                    </thead>
+                    <tbody class="player-data">
+                        <tr>
+                            <td class="py-2"><span id="playerName">Your Name</span></td>
+                            <td><span id="bet">5</span></td>
+                            <td><span id="credits"></span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="three-to-one my-1">
+                <div class="slots row no-gutters" id="reels">
+                    <canvas class="col-4" id="canvas1" width="100" height="300"></canvas>
+                    <canvas class="col-4" id="canvas2" width="100" height="300"></canvas>
+                    <canvas class="col-4" id="canvas3" width="100" height="300"></canvas>
+                </div>
+            </div>
+            <div id="overlay">
+                <div id="winline"></div>
+            </div>
+            <table>
+                <col class="logoff-form">
+                <col class="logon-form">
+                <col class="spin">
+                <thead>
+                    <tr>
+                    <form id="logon-form">
+                        <th class="buttons logoff-form" id="logoff">LOG OFF</th>
+                        <th class="buttons logon-form" id="logon">LOGON TO SAVE</th>
+                        <th class=  "buttons spin" rowspan="2" id="play">PRESS TO SPIN</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td class="logon-form" id="input">
+                            <input class="logon-form" type="text" id="Name" value="Your Name" tabindex="3">
+                        </td>                        
+                    </tr>
+
+                    </tbody>
+            </table>
+            <table>
+                <thead>
+                    <tr>
+                        <th class="on py-2">ON</th>
+                        <th class="win">WIN</th>
+                        <th class="result">RESULT</th>
+                    </tr>
+                </thead>
+                <tbody class="game-data">
+                    <tr>
+                        <td>
+                            <div class="container-fluid pt-1 my-0">
+                                <div class="thumbs">
+                                    <img class="single img-fluid" src="img/th-1.jpg" alt="froggy king" /></div>
+                                <div class="thumbs">
+                                    <img class="single img-fluid" src="img/th-1.jpg" alt="one of a pair of froggy kings" /><img
+                                        class="single img-fluid" src="img/th-1.jpg" alt="one of a pair of froggy kings" /></div>
+                                <div class="thumbs">
+                                    <img class="single img-fluid" src="img/th-1.jpg" alt="one of three froggy kings" /><img
+                                        class="single img-fluid" src="img/th-1.jpg" alt="one of three froggy kings" /><img class="single img-fluid"
+                                        src="img/th-1.jpg" alt="one of three froggy kings" />
+                                </div>
+                                <div class="threekind pt-1  ">
+                                    <p>3 OF A KIND</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="container-fluid pt-1 my-0">
+                                <div class="thumbs">
+                                    <p>x1</p>
+                                </div>
+                                <div class="thumbs">
+                                    <p>x10</p>
+                                </div>
+                                <div class="thumbs">
+                                    <p>x1000</p>
+                                </div>
+                                <div class="thumbs">
+                                    <p>x100</p>
+                                </div>
+                            </div>
+
+                        </td>
+                        <td>
+                            <div id="results">
+                                <span id="resultstotal"></span>
+                            </div>
+                            <div id="status">
+                                <p>
+                                    <span id="message">Try for Froggy Kings.</span></p>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="row no-gutters">
+                <div class="col pl-3 debug" id="audio_debug">Audio not supported</div>
+            </div>
+            <!-- row-->
+            <div class="row" id="loading">
+                <div class="col loading">
+                    <p>Loading..</p>
+                    <div id="progressbar">
+                        <div id="progress"></div>
+                    </div>
+                    <!--/progressbar-->
+                </div>
+                <!--/loading-->
+            </div>
+            <div class="row">
+
+            </div>
+            <!--/row-->
+        </div>
+        <!--col-10-->
+        <!-- container -->
+        <div class="col-2 handle">
+            <div id="shoulder">
+                <div class="py-5" id="arm">
+                    <p>PULL</p>
+                    <p>ME</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/jquery-3.3.1.js"></script>
+    <script type="text/javascript" src="js/slot.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            SlotGame();
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#arm').click(function (e) {
+                var arm = $(this).addClass('clicked'),
+                    delay = setTimeout(function () {
+                        arm.removeClass('clicked')
+                    }, 500);
+                /*e.preventDefault();
+                _startRoll(e);*/
+            });
+        });
+    </script>
+    <!-- <script type="text/javascript">
+     if (!e) var e = window.event;
+        e.cancelBubble = true;
+        if (e.stopPropagation) e.stopPropagation();
+    </script> -->
+</body>
